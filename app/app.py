@@ -39,7 +39,9 @@ REDIS_PORT = 6379
 REDIS_DB = int(os.getenv("REDIS_DB", "0"))
 
 # Redis connection
-db = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB, decode_responses=True)
+db = redis.Redis(
+    host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB, decode_responses=True
+)
 
 
 # Elasticsearch configuration
@@ -48,13 +50,19 @@ es = Elasticsearch(f"http://{ELASTICSEARCH_HOST}:9200")
 
 
 # Prometheus metrics
-REQUESTS = Counter('server_requests_total', 'Total number of requests to this webserver')
+REQUESTS = Counter(
+    'server_requests_total', 'Total number of requests to this webserver'
+)
 HEALTHCHECK_REQUESTS = Counter(
     'healthcheck_requests_total',
     'Total number of requests to healthcheck'
 )
-MAIN_ENDPOINT_REQUESTS = Counter('main_requests_total', 'Total number of requests to main endpoint')
-LOGS_ENDPOINT_REQUESTS = Counter('logs_requests_total', 'Total number of requests to logs endpoint')
+MAIN_ENDPOINT_REQUESTS = Counter(
+    'main_requests_total', 'Total number of requests to main endpoint'
+)
+LOGS_ENDPOINT_REQUESTS = Counter(
+    'logs_requests_total', 'Total number of requests to logs endpoint'
+)
 
 # Error: Uncomment to see how pylint works.
 # x = "This variable has a very short name"
@@ -129,7 +137,9 @@ def get_logs():
     Recupera los datos almacenados en Elasticsearch.
     """
     try:
-        response = es.search(index=["flask-logs", "health-logs"], query={"match_all": {}})
+        response = es.search(
+            index=["flask-logs", "health-logs"], query={"match_all": {}}
+    )
         hits = response.get("hits", {}).get("hits", [])
         logs = [hit["_source"] for hit in hits]
         logger.info("Datos recuperados desde Elasticsearch")
