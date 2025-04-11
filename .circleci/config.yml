@@ -20,6 +20,11 @@ jobs:
   test:
     docker:
       - image: cimg/python:3.9
+        environment:
+          ELASTICSEARCH_HOST: "elasticsearch"
+      - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+        environment:
+          discovery.type: "single-node"
     steps:
       - checkout
       - run:
@@ -33,7 +38,7 @@ jobs:
           
 workflows:
   version: 2
-  linting:
+  lint:
     jobs:
       - lint:
           filters:
@@ -42,6 +47,8 @@ workflows:
   build_and_test:
     jobs:
       - test:
+          requieres:
+            - lint
           filters:
             branches:
               only: dev
