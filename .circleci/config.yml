@@ -23,6 +23,7 @@ jobs:
         environment:
           ELASTICSEARCH_HOST: "elasticsearch"
       - image: docker.elastic.co/elasticsearch/elasticsearch:7.10.0
+        name: elasticsearch
         environment:
           discovery.type: "single-node"
     steps:
@@ -32,6 +33,14 @@ jobs:
           command: |
             python -m pip install --upgrade pip
             pip install -r requirements.txt
+      - run:
+          name: Esperar a que Elasticsearch se inicie
+          command: |
+            # Espera hasta que Elasticsearch responda en el puerto 9200
+            until curl --fail http://elasticsearch:9200; do
+              echo "Esperando a que Elasticsearch se inicie..."
+              sleep 5
+            done
       - run:
           name: Ejecutar tests con pytest
           command: pytest
