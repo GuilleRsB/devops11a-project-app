@@ -47,7 +47,7 @@ workflows:
   build_and_test:
     jobs:
       - test:
-          requieres:
+          requires:
             - lint
           filters:
             branches:
