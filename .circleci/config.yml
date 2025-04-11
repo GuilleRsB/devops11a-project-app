@@ -1,20 +1,25 @@
 version: 2.1
 
+orbs:
+  ggshield: gitguardian/ggshield@volatile
+
+executors:
+  python-executor:
+    docker:
+      - image: cimg/python:3.9
+    working_directory: ~/repo
+
 jobs:
   security:
-    docker:
-      - image: cimg/python:3.9
+    executor: python-executor
     steps:
       - checkout
-      - run:
-          name: Instalar GGShield
-          command: pip install ggshield
-      - run:
-          name: Escanear repositorio con GGShield
-          command: ggshield secret scan repo .
+      - ggshield/scan:
+          type: repo
+          path: .
+
   lint:
-    docker:
-      - image: cimg/python:3.9
+    executor: python-executor
     steps:
       - checkout
       - run:
@@ -26,8 +31,9 @@ jobs:
           name: Instalar flake8
           command: pip install flake8
       - run:
-          name: Ejecutar Linting con flake8
+          name: Ejecutar linting con flake8
           command: flake8 .
+
   test:
     docker:
       - image: cimg/python:3.9
@@ -41,7 +47,7 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Instalar dependencias y Coverage
+          name: Instalar dependencias y coverage
           command: |
             python -m pip install --upgrade pip
             pip install -r requirements.txt
@@ -49,13 +55,12 @@ jobs:
       - run:
           name: Esperar a que Elasticsearch se inicie
           command: |
-            # Espera hasta que Elasticsearch responda en el puerto 9200
             until curl --fail http://elasticsearch:9200; do
               echo "Esperando a que Elasticsearch se inicie..."
               sleep 5
             done
       - run:
-          name: Ejecutar tests con pytest y generar cobertura
+          name: Ejecutar tests y generar cobertura
           command: |
             coverage run -m pytest
             coverage report --fail-under=80
@@ -65,7 +70,7 @@ jobs:
       - store_artifacts:
           path: coverage.xml
           destination: coverage
-          
+
 workflows:
   version: 2
   build_and_test:
@@ -75,6 +80,8 @@ workflows:
             branches:
               only: dev
       - lint:
+          requires:
+            - security
           filters:
             branches:
               only: dev
