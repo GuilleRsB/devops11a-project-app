@@ -17,12 +17,31 @@ jobs:
       - run:
           name: Ejecutar Linting con flake8
           command: flake8 .
+  test:
+    docker:
+      - image: cimg/python:3.9
+    steps:
+      - checkout
+      - run:
+          name: Instalar dependencias
+          command: |
+            python -m pip install --upgrade pip
+            pip install -r requirements.txt
+      - run:
+          name: Ejecutar tests con pytest
+          command: pytest
           
 workflows:
   version: 2
   linting:
     jobs:
       - lint:
+          filters:
+            branches:
+              only: dev
+  build_and_test:
+    jobs:
+      - test:
           filters:
             branches:
               only: dev
