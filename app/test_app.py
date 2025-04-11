@@ -25,7 +25,6 @@ def test_index_success(client):
 def test_index_exception(client):
     with patch("app.es.index", side_effect=Exception("Fallo en Index")):
         response = client.get("/")
-
         assert response.status_code == 500
         data = response.get_json()
         assert "error" in data
@@ -47,7 +46,6 @@ def test_health_success(client):
 def test_health_exception(client):
     with patch("app.es.index", side_effect=Exception("Fallo en Health")):
         response = client.get("/health")
-
         assert response.status_code == 500
         data = response.get_json()
         assert "error" in data
@@ -63,7 +61,6 @@ def test_logs_success(client):
 def test_logs_exception(client):
     with patch("app.es.search", side_effect=Exception("Fallo en Elasticsearch")):
         response = client.get("/logs")
-
         assert response.status_code == 500
         data = response.get_json()
         assert "error" in data
