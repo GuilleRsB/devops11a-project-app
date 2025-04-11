@@ -15,8 +15,10 @@ jobs:
           name: Instalar ggshield
           command: pip install ggshield
       - run:
-          name: Escanear el repositorio con ggshield
-          command: ggshield secret scan repo .
+          name: Escaneo local sin API key
+          command: |
+            echo "Ejecutando escaneo local de secretos (sin API key)..."
+            ggshield secret scan path .
 
   lint:
     executor: python-executor
