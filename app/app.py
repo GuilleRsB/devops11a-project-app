@@ -139,7 +139,7 @@ def get_logs():
     try:
         response = es.search(
             index=["flask-logs", "health-logs"], query={"match_all": {}}
-    )
+        )
         hits = response.get("hits", {}).get("hits", [])
         logs = [hit["_source"] for hit in hits]
         logger.info("Datos recuperados desde Elasticsearch")
