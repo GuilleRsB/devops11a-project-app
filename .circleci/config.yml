@@ -1,8 +1,5 @@
 version: 2.1
 
-orbs:
-  ggshield: gitguardian/ggshield@1.1.0
-
 executors:
   python-executor:
     docker:
@@ -12,11 +9,16 @@ executors:
 jobs:
   security:
     executor: python-executor
+    environment:
+      GG_API_KEY: $GG_API_KEY  # Definir esta variable en CircleCI
     steps:
       - checkout
-      - ggshield/scan:
-          type: repo
-          path: .
+      - run:
+          name: Instalar ggshield
+          command: pip install ggshield
+      - run:
+          name: Escanear el repositorio con ggshield
+          command: ggshield secret scan repo .
 
   lint:
     executor: python-executor
