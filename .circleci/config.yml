@@ -9,8 +9,6 @@ executors:
 jobs:
   security:
     executor: python-executor
-    environment:
-      GG_API_KEY: $GG_API_KEY  # Definir esta variable en CircleCI
     steps:
       - checkout
       - run:
