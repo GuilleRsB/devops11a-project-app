@@ -38,14 +38,12 @@ jobs:
           
 workflows:
   version: 2
-  lint:
+  build_and_test:
     jobs:
       - lint:
           filters:
             branches:
               only: dev
-  build_and_test:
-    jobs:
       - test:
           requires:
             - lint
