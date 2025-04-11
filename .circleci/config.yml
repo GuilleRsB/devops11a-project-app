@@ -3,7 +3,7 @@ version: 2.1
 jobs:
   lint:
     docker:
-      - image: cimg/python:3.9  # Puedes ajustar la versión según lo que necesites.
+      - image: cimg/python:3.9
     steps:
       - checkout
       - run:
@@ -11,6 +11,9 @@ jobs:
           command: |
             python -m pip install --upgrade pip
             pip install -r requirements.txt
+      - run:
+          name: Instalar flake8
+          command: pip install flake8
       - run:
           name: Ejecutar Linting con flake8
           command: flake8 .
