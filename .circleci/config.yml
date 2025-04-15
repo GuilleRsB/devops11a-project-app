@@ -12,8 +12,8 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Instalar ggshield
-          command: pip install ggshield
+          name: Instalar ggshield (version 1.16.0 sin API key)
+          command: pip install ggshield==1.16.0
       - run:
           name: Inicializar Git en entorno CI
           command: git init
