@@ -15,6 +15,9 @@ jobs:
           name: Instalar ggshield
           command: pip install ggshield
       - run:
+          name: Inicializar Git en entorno CI
+          command: git init
+      - run:
           name: Escaneo local sin API key
           command: |
             echo "Ejecutando escaneo local de secretos (sin API key)..."
