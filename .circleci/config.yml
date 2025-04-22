@@ -13,7 +13,7 @@ jobs:
       - checkout
       - run:
           name: Instalar TruffleHog Legacy
-          command: pip install trufflehog==29.6
+          command: pip install trufflehog==2.9.6
       - run:
           name: Escanear secretos en entorno de pruebas
           command: |
