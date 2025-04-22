@@ -12,16 +12,13 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Instalar ggshield (version 1.16.0 sin API key)
-          command: pip install ggshield==1.16.0
+          name: Instalar TruffleHog
+          command: pip install trufflehog
       - run:
-          name: Inicializar Git en entorno CI
-          command: git init
-      - run:
-          name: Escaneo local sin API key
+          name: Escanear secretos en entorno de pruebas
           command: |
-            echo "Ejecutando escaneo local de secretos (sin API key)..."
-            ggshield secret scan path .
+            echo "🔍 Ejecutando escaneo de secretos con TruffleHog (sin API key)..."
+            trufflehog filesystem . --no-update
 
   lint:
     executor: python-executor
