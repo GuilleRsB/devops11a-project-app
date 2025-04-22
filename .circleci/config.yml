@@ -12,13 +12,13 @@ jobs:
     steps:
       - checkout
       - run:
-          name: Instalar TruffleHog
-          command: pip install trufflehog
+          name: Instalar TruffleHog Legacy
+          command: pip install trufflehog==29.6
       - run:
           name: Escanear secretos en entorno de pruebas
           command: |
-            echo "🔍 Ejecutando escaneo de secretos con TruffleHog (sin API key)..."
-            trufflehog filesystem . --no-update
+            echo "🔍 Ejecutando TruffleHog legacy (filesystem)..."
+            trufflehog --regex --entropy=True .
 
   lint:
     executor: python-executor
