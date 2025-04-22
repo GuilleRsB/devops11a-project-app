@@ -1,5 +1,8 @@
 version: 2.1
 
+orbs:
+  codecov: codecov/codecov@3.2.5
+
 executors:
   python-executor:
     docker:
@@ -72,6 +75,8 @@ jobs:
       - store_artifacts:
           path: coverage.xml
           destination: coverage
+      - codecov/upload:
+          file: coverage.xml
 
 workflows:
   version: 2
