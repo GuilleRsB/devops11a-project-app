@@ -15,9 +15,9 @@ jobs:
           name: Instalar TruffleHog (v2.2.1 compatible)
           command: pip install trufflehog==2.2.1
       - run:
-          name: Escaneo local sin API key (regex + entropy)
+          name: Escanear secretos en entorno de pruebas
           command: |
-            echo "🔍 Ejecutando escaneo con TruffleHog v2.2.1 (sin cuenta)..."
+            echo "Ejecutando TruffleHog legacy (filesystem)..."
             trufflehog --regex --entropy=True .
 
   lint:
@@ -41,7 +41,7 @@ jobs:
       - image: cimg/python:3.9
         environment:
           ELASTICSEARCH_HOST: "elasticsearch"
-      - image: docker.elastic.co/elasticsearch/elasticsearch:8.5.0
+      - image: docker.elastic.co/elasticsearch/elasticsearch:7.17.10
         name: elasticsearch
         environment:
           discovery.type: "single-node"
